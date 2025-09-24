@@ -1,0 +1,2 @@
+id,frameRate,duration,numVehicles,numCars,numTrucks,speedLimit,upperLaneMarkings,lowerLaneMarkings,timeStamp
+01,25,600,10,8,2,33.33,"[0.0,3.5,7.0]","[0.0,3.5,7.0]",2023-07-03T08:30:00
