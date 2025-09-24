@@ -1,0 +1,11 @@
+id,drivingDirection,initialFrame,finalFrame,class
+1,1,0,250,Car
+2,1,25,275,Car
+3,1,50,300,Truck
+4,2,0,240,Car
+5,2,30,280,Car
+6,2,60,310,Truck
+7,1,120,360,Car
+8,2,140,380,Truck
+9,1,200,400,Car
+10,2,220,420,Car

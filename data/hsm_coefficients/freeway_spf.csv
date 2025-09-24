@@ -1,0 +1,5 @@
+facility,area_type,collision_type,intercept,aadt_exponent,length_exponent,lanes_exponent
+freeway,urban,sv,-6.320,1.050,0.640,0.200
+freeway,urban,mv,-5.980,1.020,0.820,0.260
+freeway,rural,sv,-6.600,1.040,0.700,0.180
+freeway,rural,mv,-6.210,1.010,0.900,0.250
