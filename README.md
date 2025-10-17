@@ -22,7 +22,7 @@
 ---
 
 ## 特性
-- **全自动管线**：递归扫描数据根目录，逐个 recording 输出 `structure.json`、`flow.json`、`aadt.json`、`hsm_prediction.json` 与可选 `report.md`。
+- **全自动管线**：递归扫描数据根目录，逐个 recording 输出 `structure.json`、`flow.json`、`aadt.json`、`hsm_prediction.json` 与可视化汇总 `report.html`、可选 `report.md`。
 - **鲁棒/可移植**：纯标准库实现，无需额外第三方依赖；对缺失字段、异常值提供回退策略（例如车道数可由 `laneId` 反推）。
 - **可配置**：`config/aadt_factors.json` 提供 AADT 年化因子；`data/hsm_coefficients/*.csv` 配置 SPF 系数与严重度分布；命令行参数可覆盖默认值。
 - **KABCO 严重度与经济损失分析**：基于 HSM 的 KABCO 分布预测单车/多车事故在各严重度等级的期望数量，并结合单位事故成本输出经济损失估计。
@@ -71,7 +71,7 @@ python -m highd_hsm.cli estimate-all D:\data\highD D:\work\out --area urban
 python -m highd_hsm.cli estimate-one D:\data\highD\05 D:\work\out\05 --area urban
 ```
 
-运行完成后，查看 `out/<recording_id>/report.md` 或各 `*.json` 结果。
+运行完成后，查看 `out/<recording_id>/report.html`、`report.md` 或各 `*.json` 结果。
 
 ---
 
@@ -141,6 +141,7 @@ python -m highd_hsm.cli estimate-one RECORDING_DIR OUT_DIR [同上选项]
 - `flow.json`：按方向的流量（veh/h）、车型组成、1 分钟粒度的流量时序；
 - `aadt.json`：按方向的小时流量与年化结果（含所用因子）；
 - `hsm_prediction.json`：单车/多车事故数、KABCO/FI/PDO 分解、经济损失估计、过散参数 `k(L)`、校准系数；
+- `report.html`：带卡片、表格和 KABCO 可视化的综合仪表盘（若启用）；
 - `report.md`：结构化摘要（若启用）。
 
 ---
