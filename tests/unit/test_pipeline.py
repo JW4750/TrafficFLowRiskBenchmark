@@ -61,3 +61,25 @@ def test_end_to_end_pipeline(tmp_path):
     prediction = outputs["hsm_prediction"]
     assert prediction["total_all_sev"] >= 0
     assert "k_overdispersion" in prediction
+    assert set(prediction["severity_breakdown"].keys()) == {"k", "a", "b", "c", "o"}
+    assert prediction["economic_loss"]["total"] >= 0
+    assert prediction["sv"]["kabco"]["o"] >= 0
+
+
+def test_pipeline_generates_html_dashboard(tmp_path):
+    recording_dir = _sample_dir()
+    pipeline_cfg = PipelineConfig(
+        area_type="urban",
+        facility="freeway",
+        aadt_factors_path=Path(__file__).resolve().parents[2] / "config" / "aadt_factors.json",
+        output_reports=True,
+    )
+    processor = RecordingProcessor.from_paths(pipeline_cfg, HsmConfig())
+    processor.process(recording_dir, tmp_path)
+
+    html_path = tmp_path / "report.html"
+    assert html_path.exists(), "expected HTML dashboard to be generated"
+    html = html_path.read_text(encoding="utf-8")
+    assert "HighD Safety Summary" in html
+    assert "KABCO Severity Distribution" in html
+    assert html.count("<table") >= 3
