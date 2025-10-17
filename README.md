@@ -25,6 +25,7 @@
 - **全自动管线**：递归扫描数据根目录，逐个 recording 输出 `structure.json`、`flow.json`、`aadt.json`、`hsm_prediction.json` 与可选 `report.md`。
 - **鲁棒/可移植**：纯标准库实现，无需额外第三方依赖；对缺失字段、异常值提供回退策略（例如车道数可由 `laneId` 反推）。
 - **可配置**：`config/aadt_factors.json` 提供 AADT 年化因子；`data/hsm_coefficients/*.csv` 配置 SPF 系数与严重度分布；命令行参数可覆盖默认值。
+- **KABCO 严重度与经济损失分析**：基于 HSM 的 KABCO 分布预测单车/多车事故在各严重度等级的期望数量，并结合单位事故成本输出经济损失估计。
 - **示例数据与测试**：内置简化版 HighD 片段（见 `tests/data/highd_sample`），并以 `pytest` 进行回归测试。
 - **零外网依赖**：所有系数均本地化；用户可替换为本地/正式参数表。
 
@@ -111,7 +112,7 @@ highD/
 - `intercept`、`aadt_exponent`、`length_exponent`、`lanes_exponent`：对数形式系数。
 
 ### `data/hsm_coefficients/severity_distribution.csv`
-为不同碰撞类型提供 FI / PDO 占比，输出分严重度的事故数。
+为不同碰撞类型提供 FI / PDO 以及 KABCO 占比，并附带各严重度等级的单位事故成本。预测结果会输出 KABCO 期望事故数与经济损失估计。
 
 ---
 
@@ -139,7 +140,7 @@ python -m highd_hsm.cli estimate-one RECORDING_DIR OUT_DIR [同上选项]
 - `structure.json`：车道数（上/下行）、车道宽度统计、限速（km/h）、估计段长 `L`（m）、录制时长等；
 - `flow.json`：按方向的流量（veh/h）、车型组成、1 分钟粒度的流量时序；
 - `aadt.json`：按方向的小时流量与年化结果（含所用因子）；
-- `hsm_prediction.json`：单车/多车、FI/PDO 分解、总年均事故数、过散参数 `k(L)`、校准系数；
+- `hsm_prediction.json`：单车/多车事故数、KABCO/FI/PDO 分解、经济损失估计、过散参数 `k(L)`、校准系数；
 - `report.md`：结构化摘要（若启用）。
 
 ---
@@ -149,7 +150,7 @@ python -m highd_hsm.cli estimate-one RECORDING_DIR OUT_DIR [同上选项]
 1. **结构识别**：解析 `upper/lowerLaneMarkings` 推得上下行车道数/宽度；若异常，回退到 `laneId` 众数。段长 `L` 基于 `x` 坐标的 5–95 百分位差值。
 2. **交通流量**：按 `drivingDirection` 统计唯一车辆数并换算 veh/h，生成 1 分钟粒度时序、车型占比、平均速度等。
 3. **AADT 年化**：将小时流量乘以 24（默认）或使用 `config/aadt_factors.json` 中的季节/星期/小时因子进行年化。
-4. **HSM 预测**：调用 Freeway SPF，依据 AADT、车道数、段长（换算为英里）与区域类型输出单车/多车事故数及严重度分解；同时返回过散参数 `k(L)` 以供 EB 法使用。
+4. **HSM 预测**：调用 Freeway SPF，依据 AADT、车道数、段长（换算为英里）与区域类型输出单车/多车事故数、KABCO 严重度分布及经济损失估计；同时返回过散参数 `k(L)` 以供 EB 法使用。
 
 ---
 

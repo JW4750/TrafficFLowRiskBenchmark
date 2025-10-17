@@ -61,3 +61,6 @@ def test_end_to_end_pipeline(tmp_path):
     prediction = outputs["hsm_prediction"]
     assert prediction["total_all_sev"] >= 0
     assert "k_overdispersion" in prediction
+    assert set(prediction["severity_breakdown"].keys()) == {"k", "a", "b", "c", "o"}
+    assert prediction["economic_loss"]["total"] >= 0
+    assert prediction["sv"]["kabco"]["o"] >= 0

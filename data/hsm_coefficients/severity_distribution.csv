@@ -1,5 +1,5 @@
-facility,area_type,collision_type,fi_share,pdo_share
-freeway,urban,sv,0.35,0.65
-freeway,urban,mv,0.40,0.60
-freeway,rural,sv,0.45,0.55
-freeway,rural,mv,0.48,0.52
+facility,area_type,collision_type,fi_share,pdo_share,k_share,a_share,b_share,c_share,o_share,k_cost,a_cost,b_cost,c_cost,o_cost
+freeway,urban,sv,0.35,0.65,0.02,0.07,0.11,0.15,0.65,11000000,1500000,450000,120000,10000
+freeway,urban,mv,0.40,0.60,0.03,0.09,0.12,0.16,0.60,11000000,1500000,450000,120000,10000
+freeway,rural,sv,0.45,0.55,0.05,0.12,0.13,0.15,0.55,11000000,1500000,450000,120000,10000
+freeway,rural,mv,0.48,0.52,0.06,0.14,0.14,0.14,0.52,11000000,1500000,450000,120000,10000
